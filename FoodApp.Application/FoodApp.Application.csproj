@@ -12,14 +12,16 @@
 
   <ItemGroup>
     <Folder Include="Order\Commands\" />
-    <Folder Include="Common\" />
     <Folder Include="Order\" />
     <Folder Include="Order\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="BCrypt.Net" Version="0.1.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
+    <PackageReference Include="MailKit" Version="4.8.0" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
   </ItemGroup>
 
 </Project>
