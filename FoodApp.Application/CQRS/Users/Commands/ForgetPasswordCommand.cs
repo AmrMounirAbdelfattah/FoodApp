@@ -1,6 +1,5 @@
 ﻿using FoodApp.Application.Common.DTOs;
 using FoodApp.Application.Common.Helpers;
-using FoodApp.Application.CQRS.Users.Queries;
 using FoodApp.Domain.Entities;
 using FoodApp.Domain.Interface.Base;
 using MediatR;
@@ -24,9 +23,9 @@ namespace FoodApp.Application.CQRS.Users.Commands
 
         public async Task<ResultDTO<bool>> Handle(ForgetPasswordCommand request, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(new IsEmailExistQuery(request.Email));
-            if (!result.IsSuccess)
-                return result;
+            //var result = await _mediator.Send(new IsEmailExistQuery(request.Email));
+            //if (!result.IsSuccess)
+            //    return result;
 
             var resetUrl = $"https://localhost:7025/reset-password&email={request.Email}";
             var email = new SendEmailDto(request.Email, "Password Reset", $"Click to reset your password: {resetUrl}");
