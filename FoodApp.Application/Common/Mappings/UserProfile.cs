@@ -11,6 +11,7 @@ namespace FoodApp.Application.Common.Mappings
         {
             CreateMap<RegisterUserViewModel, RegisterUserCommand>();
             CreateMap<RegisterUserCommand, User>();
+            CreateMap<ResetPasswordViewModel, ResetPasswordCommand>();
         }
     }
 

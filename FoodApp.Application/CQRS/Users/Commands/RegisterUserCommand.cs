@@ -1,6 +1,7 @@
 ﻿using FoodApp.Application.Common.DTOs;
 using FoodApp.Application.Common.Exceptions;
 using FoodApp.Application.Common.Helpers;
+using FoodApp.Application.Common.ViewModels;
 using FoodApp.Application.CQRS.Users.Queries;
 using FoodApp.Domain.Entities;
 using FoodApp.Domain.Enums;
@@ -26,12 +27,12 @@ namespace FoodApp.Application.CQRS.Users.Commands
             var result = await _mediator.Send(new IsEmailExistQuery(request.Email));
             if (result.IsSuccess)
             {
-                throw new BusinessException(ErrorCode.EmailAlreadyExist, "Email is already Exists");
+                return ResultDTO<int>.Faliure(ErrorCode.EmailAlreadyExist, "Email is already Exists");
             }
             result = await _mediator.Send(new IsUserNameExistQuery(request.UserName));
             if (result.IsSuccess)
             {
-                throw new BusinessException(ErrorCode.UserNameAlreadyExist, "User Name is already Exists");
+                return ResultDTO<int>.Faliure(ErrorCode.UserNameAlreadyExist, "User Name is already Exists");
             }
 
             if (request.Password != request.ConfirmPassword)

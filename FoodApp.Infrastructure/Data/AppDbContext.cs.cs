@@ -10,15 +10,25 @@ namespace FoodApp.Infrastructure.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : base(dbContextOptions)
+        {
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(Environment.GetEnvironmentVariable("DATABASE_URL"))
                .LogTo(log => Debug.WriteLine(log), LogLevel.Information);
         }
-        public AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : base(dbContextOptions)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-        }
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.UserName)
+                .IsUnique();
 
-        public DbSet<Order> Orders { get; set; }
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+        }
     }
 }

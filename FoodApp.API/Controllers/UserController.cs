@@ -26,8 +26,18 @@ namespace FoodApp.API.Controllers
             }
             return Ok(ResultViewModel<int>.Sucess(result.Data, result.Message));
         }
-   
-     
+        [HttpPut]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel viewModel)
+        {
+            var result = await _mediator.Send(viewModel.MapOne<ResetPasswordCommand>());
+            if (!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+            return Ok(ResultViewModel<int>.Sucess(result.Data, result.Message));
+        }
+
+
 
 
     }
