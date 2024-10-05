@@ -23,7 +23,5 @@ namespace FoodApp.Application.CQRS.Users.Queries
             }
             return ResultDTO<bool>.Faliure(ErrorCode.EmailIsNotFound, "Email is Not Found");
         }
-
-
     }
 }
