@@ -1,4 +1,5 @@
-﻿using FoodApp.Application.Common.Helpers;
+﻿using FoodApp.Application.Common.Exceptions;
+using FoodApp.Application.Common.Helpers;
 using FoodApp.Application.Common.ViewModels;
 using FoodApp.Application.Common.ViewModels.Users;
 using FoodApp.Application.CQRS.Users.Commands;
@@ -22,7 +23,7 @@ namespace FoodApp.API.Controllers
             var result = await _mediator.Send(viewModel.MapOne<RegisterUserCommand>());
             if (!result.IsSuccess)
             {
-                return BadRequest();
+                throw new BusinessException(result.ErrorCode,result.Message);
             }
             return Ok(ResultViewModel<int>.Sucess(result.Data, result.Message));
         }
@@ -32,7 +33,7 @@ namespace FoodApp.API.Controllers
             var result = await _mediator.Send(viewModel.MapOne<ResetPasswordCommand>());
             if (!result.IsSuccess)
             {
-                return BadRequest();
+                throw new BusinessException(result.ErrorCode, result.Message);
             }
             return Ok(ResultViewModel<int>.Sucess(result.Data, result.Message));
         }
