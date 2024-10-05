@@ -24,15 +24,15 @@ namespace FoodApp.Application.CQRS.Users.Commands
             var user = result.Data;
             if (!result.IsSuccess)
                 {
-                    throw new BusinessException(ErrorCode.EmailIsNotFound, "Email is Not Found");
+                return ResultDTO<bool>.Faliure(ErrorCode.EmailIsNotFound, "Email is Not Found");
                 }
                if(user.OtpCode!=request.OtpCode || user.OtpExpiry <= DateTime.Now || user.OtpExpiry==null)
             {
-                throw new BusinessException(ErrorCode.WrongOtp, "Wrong Otp");
+                return ResultDTO<bool>.Faliure(ErrorCode.WrongOtp, "Wrong Otp");
             }
             if (request.NewPassword != request.ConfirmNewPassword)
             {
-                throw new BusinessException(ErrorCode.PasswordsDontMatch, "Passwords don't match");
+                return ResultDTO<bool>.Faliure(ErrorCode.PasswordsDontMatch, "Passwords don't match");
             }
             var newHashedPassword = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
             user.Password = newHashedPassword;
