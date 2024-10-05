@@ -18,7 +18,6 @@ namespace FoodApp.Domain.Entities
         public DateTime? LastLogin { get; set; }
         public string? OtpCode { get; set; }
         public DateTime? OtpExpiry { get; set; }
-        //public ICollection<Recipe>? Recipes { get; set; }
         public ICollection<UserRecipes>? UserRecipes { get; set; }
         public ICollection<Recipe>? FavoriteRecipes { get; set; }
     }
