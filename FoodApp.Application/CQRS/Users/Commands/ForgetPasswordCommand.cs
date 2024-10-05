@@ -1,4 +1,5 @@
 ﻿using FoodApp.Application.Common.DTOs;
+using FoodApp.Application.Common.Helpers;
 using FoodApp.Application.CQRS.Users.Queries;
 using FoodApp.Domain.Entities;
 using FoodApp.Domain.Interface.Base;
@@ -12,11 +13,13 @@ namespace FoodApp.Application.CQRS.Users.Commands
     {
         private readonly IRepository<User> _userRepository;
         private readonly IMediator _mediator;
+        private readonly IFluentEmailService _emailService;
 
-        public ForgetPasswordCommandHandler(IRepository<User> userRepository, IMediator mediator)
+        public ForgetPasswordCommandHandler(IRepository<User> userRepository, IMediator mediator, IFluentEmailService emailService)
         {
             _userRepository = userRepository;
             _mediator = mediator;
+            _emailService = emailService;
         }
 
         public async Task<ResultDTO<bool>> Handle(ForgetPasswordCommand request, CancellationToken cancellationToken)
@@ -25,9 +28,9 @@ namespace FoodApp.Application.CQRS.Users.Commands
             if (!result.IsSuccess)
                 return result;
 
-            //var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            //var resetUrl = $"https://yourapp.com/reset-password?token={token}&email={request.Email}";
-            //await _emailSender.SendEmailAsync(request.Email, "Password Reset", $"Click to reset your password: {resetUrl}");
+            var resetUrl = $"https://localhost:7025/reset-password&email={request.Email}";
+            var email = new SendEmailDto(request.Email, "Password Reset", $"Click to reset your password: {resetUrl}");
+            await _emailService.SendEmailAsync(email);
 
             return ResultDTO<bool>.Sucess(true);
         }

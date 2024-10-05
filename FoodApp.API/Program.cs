@@ -1,15 +1,14 @@
 using AutoMapper;
 using DotNetEnv;
 using FoodApp.API.Middlewares;
-using FoodApp.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using FoodApp.Application.Common.Mappings;
 using FoodApp.Application.Common.Helpers;
-using Autofac.Core;
-using FoodApp.Domain.Interface.Base;
-using FoodApp.Infrastructure.Repositories.Base;
+using FoodApp.Application.Common.Mappings;
 using FoodApp.Application.CQRS.Users.Commands;
-using Microsoft.Extensions.DependencyInjection;
+using FoodApp.Domain.Interface.Base;
+using FoodApp.Infrastructure.Data;
+using FoodApp.Infrastructure.Repositories.Base;
+using System.Net;
+using System.Net.Mail;
 
 namespace FoodApp.API
 {
@@ -38,11 +37,25 @@ namespace FoodApp.API
             //builder.Services.AddMediatR(typeof(RegisterUserCommandHandler).Assembly);
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(RegisterUserCommandHandler).Assembly));
 
-            builder.Services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
-            builder.Services.AddAutoMapper(typeof(UserProfile),typeof(RecipeProfile));
-           
-          
-          
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            builder.Services.AddAutoMapper(typeof(UserProfile), typeof(RecipeProfile));
+            builder.Services.AddScoped<IFluentEmailService, FluentEmailService>();
+
+            var port = builder.Configuration.GetSection("EmailCredentials").GetValue<int>("Port");
+            var from = builder.Configuration.GetSection("EmailCredentials").GetValue<string>("From");
+            var password = builder.Configuration.GetSection("EmailCredentials").GetValue<string>("Password");
+            var host = builder.Configuration.GetSection("EmailCredentials").GetValue<string>("Host");
+
+            var sender = new SmtpClient
+            {
+                Host = host,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(from, password),
+                EnableSsl = true,
+                Port = port
+            };
+            builder.Services.AddFluentEmail(from, "Upskilling").AddSmtpSender(sender);
+
             var app = builder.Build();
             //AUTOMAPPER
             MapperHelper.Mapper = app.Services.GetService<IMapper>();

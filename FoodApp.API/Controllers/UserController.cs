@@ -40,7 +40,7 @@ namespace FoodApp.API.Controllers
             return Ok(ResultViewModel<int>.Sucess(result.Data, result.Message));
         }
 
-        [HttpPost("forget-password")]
+        [HttpPost]
         public async Task<IActionResult> ForgetPasswordAsync(string email)
         {
             var result = await _mediator.Send(new ForgetPasswordCommand(email));
