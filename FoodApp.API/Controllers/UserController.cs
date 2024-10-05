@@ -12,10 +12,12 @@ namespace FoodApp.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
+
         public UserController(IMediator mediator)
         {
             _mediator = mediator;
         }
+
         [HttpPost]
         public async Task<IActionResult> RegisterUser(RegisterUserViewModel viewModel)
         {
@@ -26,6 +28,7 @@ namespace FoodApp.API.Controllers
             }
             return Ok(ResultViewModel<int>.Sucess(result.Data, result.Message));
         }
+
         [HttpPut]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel viewModel)
         {
@@ -37,9 +40,15 @@ namespace FoodApp.API.Controllers
             return Ok(ResultViewModel<int>.Sucess(result.Data, result.Message));
         }
 
+        [HttpPost("forget-password")]
+        public async Task<IActionResult> ForgetPasswordAsync(string email)
+        {
+            var result = await _mediator.Send(new ForgetPasswordCommand(email));
+            if (!result.IsSuccess)
+                return BadRequest("User not found or invalid request.");
 
-
-
+            return Ok(ResultViewModel<string>.Sucess(result, "Password reset link has been sent."));
+        }
     }
 }
 
