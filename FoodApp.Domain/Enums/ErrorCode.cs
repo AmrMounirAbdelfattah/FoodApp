@@ -13,6 +13,9 @@
         EmailIsNotFound,
         UserNameIsNotFound,
         WrongOtp,
-        UnableToSendEmail
+        UnableToSendEmail,
+        //201-300 Recipe
+        RecipeIsNotFound = 201,
+            InvalidUserID
     }
 }

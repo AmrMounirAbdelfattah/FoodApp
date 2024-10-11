@@ -4,11 +4,12 @@
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Image { get; set; }
-       // [Precision(18, 2)]
+       public ICollection< RecipeImages> RecipeImages { get; set; }
+        // [Precision(18, 2)]
         public decimal Price { get; set; }
         public int CategoryID { get; set; }
         public Category Category { get; set; }
-        public ICollection<UserRecipes> UserRecipes { get; set; }
+        public User User { get; set; }
+        public int UserID { get; set; }
     }
 }

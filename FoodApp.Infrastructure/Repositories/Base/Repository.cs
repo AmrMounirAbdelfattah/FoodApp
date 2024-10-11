@@ -1,4 +1,5 @@
-﻿using FoodApp.Domain.Entities;
+﻿using CloudinaryDotNet.Actions;
+using FoodApp.Domain.Entities;
 using FoodApp.Domain.Interface.Base;
 using FoodApp.Infrastructure.Data;
 using System.Linq.Expressions;
@@ -22,6 +23,10 @@ namespace FoodApp.Infrastructure.Repositories.Base
         {
             return _context.Set<T>().Where(e => !e.Deleted);
         }
+        public IQueryable<TResult> GetAllWithProjection<TResult>(Expression<Func<T, bool>> predicate,Expression<Func<T, TResult>> selector)
+        {
+            return _context.Set<T>().Where(e => !e.Deleted).Where(predicate).Select(selector);
+        }
         public IQueryable<T> Get(Expression<Func<T, bool>> predicate)
         {
             return GetAll().Where(predicate);
@@ -29,6 +34,10 @@ namespace FoodApp.Infrastructure.Repositories.Base
         public T GetByID(int id)
         {
             return GetAll().FirstOrDefault(t => t.ID == id);
+        }
+        public TResult GetByIDWithProjection<TResult>(Expression<Func<T, bool>> predicate, Expression<Func<T, TResult>> selector)
+        {
+            return GetAllWithProjection(predicate,selector).FirstOrDefault();
         }
         public T First(Expression<Func<T, bool>> predicate)
         {

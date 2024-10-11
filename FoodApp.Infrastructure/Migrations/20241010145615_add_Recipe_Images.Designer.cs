@@ -4,6 +4,7 @@ using FoodApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodApp.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241010145615_add_Recipe_Images")]
+    partial class add_Recipe_Images
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,6 +76,10 @@ namespace FoodApp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImagesUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -90,31 +97,6 @@ namespace FoodApp.Infrastructure.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Recipes");
-                });
-
-            modelBuilder.Entity("FoodApp.Domain.Entities.RecipeImages", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RecipeID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("RecipeID");
-
-                    b.ToTable("RecipeImages");
                 });
 
             modelBuilder.Entity("FoodApp.Domain.Entities.User", b =>
@@ -196,25 +178,9 @@ namespace FoodApp.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("FoodApp.Domain.Entities.RecipeImages", b =>
-                {
-                    b.HasOne("FoodApp.Domain.Entities.Recipe", "Recipe")
-                        .WithMany("RecipeImages")
-                        .HasForeignKey("RecipeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Recipe");
-                });
-
             modelBuilder.Entity("FoodApp.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Recipes");
-                });
-
-            modelBuilder.Entity("FoodApp.Domain.Entities.Recipe", b =>
-                {
-                    b.Navigation("RecipeImages");
                 });
 
             modelBuilder.Entity("FoodApp.Domain.Entities.User", b =>

@@ -1,3 +1,4 @@
+using Autofac.Core;
 using AutoMapper;
 using DotNetEnv;
 using FoodApp.API.Middlewares;
@@ -38,8 +39,9 @@ namespace FoodApp.API
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(RegisterUserCommandHandler).Assembly));
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            builder.Services.AddAutoMapper(typeof(UserProfile), typeof(RecipeProfile));
+            builder.Services.AddAutoMapper(typeof(UserProfile), typeof(RecipeProfile),typeof(RecipeImagesProfile));
             builder.Services.AddScoped<IFluentEmailService, FluentEmailService>();
+            builder.Services.AddScoped<CloudinaryService>();
 
             var port = builder.Configuration.GetSection("EmailCredentials").GetValue<int>("Port");
             var from = builder.Configuration.GetSection("EmailCredentials").GetValue<string>("From");
