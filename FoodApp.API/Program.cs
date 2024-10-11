@@ -7,6 +7,7 @@ using FoodApp.Application.CQRS.Users.Commands;
 using FoodApp.Domain.Interface.Base;
 using FoodApp.Infrastructure.Data;
 using FoodApp.Infrastructure.Repositories.Base;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Net.Mail;
 
@@ -19,9 +20,15 @@ namespace FoodApp.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddDbContext<AppDbContext>();
-
             builder.Services.AddControllers();
+            //builder.Services.AddDbContext<AppDbContext>();
+
+            var connectionString = builder.Configuration.GetConnectionString("ConnectionStrings");
+
+            // Configure DbContext with the connection string
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(connectionString));
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
