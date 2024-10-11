@@ -14,6 +14,4 @@ namespace FoodApp.Application.Common.Mappings
             CreateMap<ResetPasswordViewModel, ResetPasswordCommand>();
         }
     }
-
-    
 }
