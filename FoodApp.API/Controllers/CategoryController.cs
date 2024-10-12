@@ -49,5 +49,15 @@ namespace FoodApp.API.Controllers
         }
 
         
+        [HttpDelete("{id}")]
+        public async Task<ResultViewModel<bool>> DeleteCategoryAsync(int id)
+        {
+            var result = await _mediator.Send(new DeleteCategoryCommand(id));
+
+            if (!result)
+                return ResultViewModel<bool>.Faliure(ErrorCode.UnKnown, "Failed to delete category or category not found");
+
+            return ResultViewModel<bool>.Sucess(result, "Category deleted successfully");
+        }
     }
 }
