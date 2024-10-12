@@ -50,6 +50,33 @@ namespace FoodApp.API.Controllers
 
             return Ok(ResultViewModel<string>.Sucess(result, "Password reset link has been sent."));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> VerifyAccount(VerifyAccountViewModel viewModel)
+        {
+            var result = await _mediator.Send(new VerifyAccountCommand(viewModel.Email, viewModel.OtpCode));
+
+            if (!result.IsSuccess)
+            {
+                throw new BusinessException(result.ErrorCode, result.Message);
+            }
+
+            return Ok(ResultViewModel<bool>.Sucess(result.Data, "Account verified successfully."));
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel viewModel)
+        {
+            var result = await _mediator.Send(new ChangePasswordCommand(viewModel.Email, viewModel.OldPassword, viewModel.NewPassword, viewModel.ConfirmNewPassword));
+
+            if (!result.IsSuccess)
+            {
+                throw new BusinessException(result.ErrorCode, result.Message);
+            }
+
+            return Ok(ResultViewModel<bool>.Sucess(result.Data, "Password changed successfully."));
+        }
+
     }
 }
 
