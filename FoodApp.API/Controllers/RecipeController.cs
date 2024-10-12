@@ -9,15 +9,8 @@ namespace FoodApp.API.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class RecipeController : ControllerBase
+    public class RecipeController(IMediator _mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public RecipeController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpGet]
         public async Task<ResultViewModel<IEnumerable<RecipeViewModel>>> GetAllRecipesAsync()
         {

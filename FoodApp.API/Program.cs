@@ -45,7 +45,7 @@ namespace FoodApp.API
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(RegisterUserCommandHandler).Assembly));
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            builder.Services.AddAutoMapper(typeof(UserProfile), typeof(RecipeProfile));
+            builder.Services.AddAutoMapper(typeof(UserProfile), typeof(RecipeProfile), typeof(CategoryProfile));
             builder.Services.AddScoped<IFluentEmailService, FluentEmailService>();
 
             var port = builder.Configuration.GetSection("EmailCredentials").GetValue<int>("Port");
