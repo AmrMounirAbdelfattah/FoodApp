@@ -1,6 +1,8 @@
-﻿using FoodApp.Application.Common.Helpers;
+﻿using FoodApp.Application.Common.Exceptions;
+using FoodApp.Application.Common.Helpers;
 using FoodApp.Application.Common.ViewModels;
 using FoodApp.Application.Common.ViewModels.Recipes;
+using FoodApp.Application.CQRS.Recipes.Commands;
 using FoodApp.Application.CQRS.Recipes.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -20,5 +22,13 @@ namespace FoodApp.API.Controllers
 
             return ResultViewModel<IEnumerable<RecipeViewModel>>.Sucess(recipesVM, "Successfully Get All Recipes");
         }
-    }
-}
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteRecipe(int id)
+        {
+            var result = await _mediator.Send(new DeleteRecipeCommand(id));
+
+            return Ok(result);
+
+        }
+    }}
