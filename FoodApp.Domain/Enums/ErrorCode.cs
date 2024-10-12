@@ -13,6 +13,9 @@
         EmailIsNotFound,
         UserNameIsNotFound,
         WrongOtp,
-        UnableToSendEmail
+        UnableToSendEmail,
+
+
+        EmptyCategoryName = 1000,
     }
 }
