@@ -1,10 +1,16 @@
-﻿using FoodApp.Application.Common.Helpers;
+﻿using FoodApp.Application.Common.DTOs;
+using FoodApp.Application.Common.DTOs.Categories;
+using FoodApp.Application.Common.Exceptions;
+using FoodApp.Application.Common.Helpers;
 using FoodApp.Application.Common.ViewModels;
 using FoodApp.Application.Common.ViewModels.Categories;
 using FoodApp.Application.CQRS.Categories.Commands;
+using FoodApp.Application.CQRS.Categories.Queries;
+using FoodApp.Domain.Entities;
 using FoodApp.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Sprache;
 
 namespace FoodApp.API.Controllers
 {
@@ -22,5 +28,26 @@ namespace FoodApp.API.Controllers
 
             return ResultViewModel<bool>.Sucess(result, "Category added successfully");
         }
+
+        [HttpPut]
+        public async Task<ResultDTO<bool>> UpdateCategory(int categoryId , string name)
+        {
+            var result = await _mediator.Send(new UpdateCategoryCommand(categoryId, name));
+
+            return ResultDTO<bool>.Sucess(true, "Category updated successfully");
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetCategoryById(int id)
+        {
+            var result = await _mediator.Send(new GetCategoryByIdQuery(id));
+            if (!result.IsSuccess)
+
+                throw new BusinessException(result.ErrorCode, result.Message);
+
+            return Ok(result);
+        }
+
+        
     }
 }
