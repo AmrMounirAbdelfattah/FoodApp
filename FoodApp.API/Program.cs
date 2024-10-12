@@ -1,8 +1,9 @@
-using Autofac.Core;
 using AutoMapper;
 using DotNetEnv;
 using FoodApp.API.Middlewares;
 using FoodApp.Application.Common.Helpers;
+using FoodApp.Application.Common.Helpers.CloudinaryHelper;
+using FoodApp.Application.Common.Helpers.ImageHelper;
 using FoodApp.Application.Common.Mappings;
 using FoodApp.Application.CQRS.Users.Commands;
 using FoodApp.Domain.Interface.Base;
@@ -41,7 +42,8 @@ namespace FoodApp.API
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddAutoMapper(typeof(UserProfile), typeof(RecipeProfile),typeof(RecipeImagesProfile));
             builder.Services.AddScoped<IFluentEmailService, FluentEmailService>();
-            builder.Services.AddScoped<CloudinaryService>();
+            builder.Services.AddSingleton<ICloudinaryService, CloudinaryService>();
+            builder.Services.AddSingleton<IImageService, ImageService>();
 
             var port = builder.Configuration.GetSection("EmailCredentials").GetValue<int>("Port");
             var from = builder.Configuration.GetSection("EmailCredentials").GetValue<string>("From");

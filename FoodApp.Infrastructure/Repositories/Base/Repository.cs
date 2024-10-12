@@ -51,6 +51,10 @@ namespace FoodApp.Infrastructure.Repositories.Base
         {
             _context.Update(entity);
         }
+        public void UpdateRange(T entity)
+        {
+            _context.UpdateRange();
+        }
         public void Delete(int id)
         {
             var entity = GetByID(id);

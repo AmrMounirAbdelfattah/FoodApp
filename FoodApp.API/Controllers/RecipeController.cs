@@ -1,14 +1,12 @@
 ﻿using FoodApp.Application.Common.Exceptions;
-using FoodApp.Application.Common.ViewModels.Users;
+using FoodApp.Application.Common.Helpers;
 using FoodApp.Application.Common.ViewModels;
-using FoodApp.Application.CQRS.Users.Commands;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using FoodApp.Application.Common.ViewModels.Recipes;
 using FoodApp.Application.CQRS.Recipes.Commands;
-using FoodApp.Application.Common.Helpers;
 using FoodApp.Application.CQRS.Recipes.Queries;
-using static System.Net.Mime.MediaTypeNames;
+using FoodApp.Application.CQRS.RecipesImages.Commands;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FoodApp.API.Controllers
 {
@@ -36,7 +34,7 @@ namespace FoodApp.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateRecipeImage(UpdateRecipeImageViewModel viewModel)
         {
-            var result = await _mediator.Send(viewModel.MapOne<UpdateRecipeImageCommand>());
+            var result = await _mediator.Send(viewModel.MapOne<UpdateRangeOfRecipeImagesCommand>());
             if (!result.IsSuccess)
             {
                 throw new BusinessException(result.ErrorCode, result.Message);
@@ -48,7 +46,7 @@ namespace FoodApp.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetRecipeById(int id)
         {
-            var result = await _mediator.Send(new GetRecipeByIdQuery(id));
+            var result = await _mediator.Send(new GetRecipeDetailsByIdQuery(id));
             if (!result.IsSuccess)
             {
                 throw new BusinessException(result.ErrorCode, result.Message);

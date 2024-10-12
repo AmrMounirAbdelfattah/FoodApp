@@ -17,5 +17,6 @@ namespace FoodApp.Application.Common.ViewModels.Recipes
         public decimal Price { get; set; }
         public string CategoryName{ get; set; }
         public string UserName{ get; set; }
+        
     }
 }

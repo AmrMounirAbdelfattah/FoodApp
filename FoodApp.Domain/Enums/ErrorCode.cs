@@ -16,6 +16,8 @@
         UnableToSendEmail,
         //201-300 Recipe
         RecipeIsNotFound = 201,
-            InvalidUserID
+            InvalidUserID,
+        //301-400 RecipeImage
+        RecipeImageIsNotFound = 301,
     }
 }

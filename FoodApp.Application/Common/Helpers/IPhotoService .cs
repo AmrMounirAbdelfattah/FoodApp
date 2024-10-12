@@ -8,5 +8,6 @@ namespace FoodApp.Application.Common.Helpers
 {
     public interface IPhotoService
     {
+
     }
 }

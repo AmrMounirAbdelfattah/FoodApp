@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using FoodApp.Application.Common.ViewModels.RecipeImages;
+using FoodApp.Application.Common.ViewModels.Recipes;
+using FoodApp.Application.CQRS.RecipesImages.Commands;
 using FoodApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,7 +15,7 @@ namespace FoodApp.Application.Common.Mappings
     {
         public RecipeImagesProfile()
         {
-           // CreateMap<RecipeImages, RecipeImagesViewModel>();
+           CreateMap<UpdateRecipeImageViewModel, UpdateRangeOfRecipeImagesCommand>();
         }
     }
 }

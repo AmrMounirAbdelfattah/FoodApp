@@ -13,5 +13,6 @@ namespace FoodApp.Application.Common.ViewModels.Recipes
         public ICollection<IFormFile> RecipeImages { get; set; }
         public int ID { get; set; }
         public int UserID { get; set; }
+        public int RecipeID { get; set; }
     }
 }
