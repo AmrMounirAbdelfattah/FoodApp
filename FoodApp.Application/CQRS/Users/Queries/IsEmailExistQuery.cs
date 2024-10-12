@@ -16,7 +16,7 @@ namespace FoodApp.Application.CQRS.Users.Queries
         }
         public async Task<ResultDTO<bool>> Handle(IsEmailExistQuery request, CancellationToken cancellationToken)
         {
-            var result = _userRepository.Any(u => u.Email == request.email);
+            var result = await Task.Run(() => _userRepository.Any(u => u.Email == request.email));
             if (result)
             {
                 return ResultDTO<bool>.Sucess(true);

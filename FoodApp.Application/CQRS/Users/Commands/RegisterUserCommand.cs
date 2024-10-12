@@ -1,7 +1,5 @@
 ﻿using FoodApp.Application.Common.DTOs;
-using FoodApp.Application.Common.Exceptions;
 using FoodApp.Application.Common.Helpers;
-using FoodApp.Application.Common.ViewModels;
 using FoodApp.Application.CQRS.Users.Queries;
 using FoodApp.Domain.Entities;
 using FoodApp.Domain.Enums;
@@ -44,9 +42,9 @@ namespace FoodApp.Application.CQRS.Users.Commands
             var otpCode = OTPGenerator.GenerateOTP();
             user.OtpCode = otpCode;
             user.OtpExpiry = DateTime.UtcNow.AddMinutes(90);
-            EmailService.SendEmail(user.Email, "OTP", otpCode);
             _userRepository.Add(user);
             _userRepository.SaveChanges();
+            EmailService.SendEmail(user.Email, "OTP", otpCode);
             return ResultDTO<int>.Sucess(user.ID, "User Added Successfully");
         }
     }

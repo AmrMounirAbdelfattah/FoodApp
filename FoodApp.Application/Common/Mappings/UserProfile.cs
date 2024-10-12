@@ -16,6 +16,4 @@ namespace FoodApp.Application.Common.Mappings
             CreateMap<User,UserDto>().ReverseMap();
         }
     }
-
-    
 }

@@ -8,9 +8,11 @@ using FoodApp.Application.CQRS.Users.Commands;
 using FoodApp.Domain.Interface.Base;
 using FoodApp.Infrastructure.Data;
 using FoodApp.Infrastructure.Repositories.Base;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -24,9 +26,15 @@ namespace FoodApp.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddDbContext<AppDbContext>();
-
             builder.Services.AddControllers();
+            //builder.Services.AddDbContext<AppDbContext>();
+
+            var connectionString = builder.Configuration.GetConnectionString("ConnectionStrings");
+
+            // Configure DbContext with the connection string
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(connectionString));
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
            // builder.Services.AddSwaggerGen();
@@ -95,7 +103,7 @@ namespace FoodApp.API
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(RegisterUserCommandHandler).Assembly));
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            builder.Services.AddAutoMapper(typeof(UserProfile), typeof(RecipeProfile));
+            builder.Services.AddAutoMapper(typeof(UserProfile), typeof(RecipeProfile), typeof(CategoryProfile));
             builder.Services.AddScoped<IFluentEmailService, FluentEmailService>();
 
             var port = builder.Configuration.GetSection("EmailCredentials").GetValue<int>("Port");
