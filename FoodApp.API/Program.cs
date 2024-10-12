@@ -1,15 +1,21 @@
 using AutoMapper;
 using DotNetEnv;
 using FoodApp.API.Middlewares;
+using FoodApp.Application.Common.Constants;
 using FoodApp.Application.Common.Helpers;
 using FoodApp.Application.Common.Mappings;
 using FoodApp.Application.CQRS.Users.Commands;
 using FoodApp.Domain.Interface.Base;
 using FoodApp.Infrastructure.Data;
 using FoodApp.Infrastructure.Repositories.Base;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 
 namespace FoodApp.API
 {
@@ -31,7 +37,59 @@ namespace FoodApp.API
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+           // builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Food App Api", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. " +
+                                    "\r\n\r\n Enter 'Bearer' [space] and then your token in the text input below." +
+                                    "\r\n\r\nExample: \"Bearer abcdefghijklmnopqrstuvwxyz\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header,
+
+            },
+            new List<string>()
+        }
+    });
+            });
+
+            builder.Services.AddAuthentication(opts =>
+            {
+                opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(opts =>
+            {
+                opts.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = JwtSettings.Issuer,
+                    ValidAudience = JwtSettings.Audience,
+                    ClockSkew = TimeSpan.Zero, // Reduce the default clock skew (allowable token time discrepancy)
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtSettings.SecretKey))
+                };
+            });
+
             //Enviroment
             Env.Load();
             //AUTOFAC
