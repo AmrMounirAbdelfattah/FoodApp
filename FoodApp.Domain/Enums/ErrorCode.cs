@@ -12,12 +12,15 @@
         WrongPasswordOrEmail,
         EmailIsNotFound,
         UserNameIsNotFound,
+        UserIsNotFound,
         WrongOtp,
         UnableToSendEmail,
         //201-300 Recipe
         RecipeIsNotFound = 201,
-            InvalidUserID,
+        InvalidUserID,
         //301-400 RecipeImage
         RecipeImageIsNotFound = 301,
+        //401- 500 Rating
+        RecipeHasBeenRated=401,
     }
 }

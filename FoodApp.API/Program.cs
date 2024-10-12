@@ -40,7 +40,7 @@ namespace FoodApp.API
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(RegisterUserCommandHandler).Assembly));
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            builder.Services.AddAutoMapper(typeof(UserProfile), typeof(RecipeProfile),typeof(RecipeImagesProfile));
+            builder.Services.AddAutoMapper(typeof(UserProfile), typeof(RecipeProfile),typeof(RecipeImagesProfile),typeof(RatingProfile));
             builder.Services.AddScoped<IFluentEmailService, FluentEmailService>();
             builder.Services.AddSingleton<ICloudinaryService, CloudinaryService>();
             builder.Services.AddSingleton<IImageService, ImageService>();

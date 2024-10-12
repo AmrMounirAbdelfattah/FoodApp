@@ -10,6 +10,7 @@ namespace FoodApp.Infrastructure.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
         public DbSet<Order> Orders { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : base(dbContextOptions)
         {
@@ -29,6 +30,11 @@ namespace FoodApp.Infrastructure.Data
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
+            modelBuilder.Entity<User>()
+                      .HasMany(u => u.Ratings)
+                      .WithOne(r => r.User)
+                      .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }
