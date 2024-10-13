@@ -22,5 +22,6 @@
         RecipeImageIsNotFound = 301,
         //401- 500 Rating
         RecipeHasBeenRated=401,
+        EmptyCategoryName = 1000,
     }
 }

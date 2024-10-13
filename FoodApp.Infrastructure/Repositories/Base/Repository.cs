@@ -9,6 +9,7 @@ namespace FoodApp.Infrastructure.Repositories.Base
     public class Repository<T> : IRepository<T> where T : BaseModel
     {
         private readonly AppDbContext _context;
+
         public Repository(AppDbContext context)
         {
             _context = context;
@@ -69,7 +70,7 @@ namespace FoodApp.Infrastructure.Repositories.Base
         {
             _context.SaveChanges();
         }
-       
+
 
     }
 }

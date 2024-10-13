@@ -1,4 +1,5 @@
-﻿using FoodApp.Application.Common.Exceptions;
+﻿using FoodApp.Application.Common.DTOs;
+using FoodApp.Application.Common.Exceptions;
 using FoodApp.Application.Common.Helpers;
 using FoodApp.Application.Common.ViewModels;
 using FoodApp.Application.Common.ViewModels.Users;
@@ -49,6 +50,14 @@ namespace FoodApp.API.Controllers
                 return BadRequest("User not found or invalid request.");
 
             return Ok(ResultViewModel<string>.Sucess(result, "Password reset link has been sent."));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Login(UserLoginDto user)
+        {
+            var x = await _mediator.Send(new LoginUserCommand(user));
+
+            return Ok(x);
         }
     }
 }

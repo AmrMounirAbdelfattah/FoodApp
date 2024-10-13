@@ -22,7 +22,7 @@ namespace FoodApp.Application.CQRS.Recipes.Queries
         public async Task<ResultDTO<bool>> Handle(IsRecipeHasRatingQuery request, CancellationToken cancellationToken)
         {
             var result = _ratingRepository.Any(u => u.RecipeID == request.RecipeID && u.UserID==request.UserID);
-            if (result)
+            if (!result)
             {
                 return ResultDTO<bool>.Sucess(true);
             }
