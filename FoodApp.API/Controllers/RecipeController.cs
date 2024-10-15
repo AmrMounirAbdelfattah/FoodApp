@@ -54,39 +54,39 @@ namespace FoodApp.API.Controllers
 
         }
         [HttpPut]
-    public async Task<IActionResult> UpdateRecipe(UpdateRecipeViewModel viewModel)
-    {
-        var result = await _mediator.Send(viewModel.MapOne<UpdateRecipeCommand>());
-        if (!result.IsSuccess)
+        public async Task<IActionResult> UpdateRecipe(UpdateRecipeViewModel viewModel)
         {
-            throw new BusinessException(result.ErrorCode, result.Message);
+            var result = await _mediator.Send(viewModel.MapOne<UpdateRecipeCommand>());
+            if (!result.IsSuccess)
+            {
+                throw new BusinessException(result.ErrorCode, result.Message);
+            }
+            return Ok(ResultViewModel<int>.Sucess(result.Data, result.Message));
         }
-        return Ok(ResultViewModel<int>.Sucess(result.Data, result.Message));
-    }
-    [HttpPut]
-    public async Task<IActionResult> UpdateRecipeImage(UpdateRecipeImageViewModel viewModel)
-    {
-        var result = await _mediator.Send(viewModel.MapOne<UpdateRangeOfRecipeImagesCommand>());
-        if (!result.IsSuccess)
+        [HttpPut]
+        public async Task<IActionResult> UpdateRecipeImage(UpdateRecipeImageViewModel viewModel)
         {
-            throw new BusinessException(result.ErrorCode, result.Message);
-        }
-        return Ok(ResultViewModel<int>.Sucess(result.Data, result.Message));
+            var result = await _mediator.Send(viewModel.MapOne<UpdateRangeOfRecipeImagesCommand>());
+            if (!result.IsSuccess)
+            {
+                throw new BusinessException(result.ErrorCode, result.Message);
+            }
+            return Ok(ResultViewModel<int>.Sucess(result.Data, result.Message));
 
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> GetRecipeById(int id)
-    {
-        var result = await _mediator.Send(new GetRecipeDetailsByIdQuery(id));
-        if (!result.IsSuccess)
-        {
-            throw new BusinessException(result.ErrorCode, result.Message);
         }
-        var recipeViewModel = result.Data.MapOne<RecipeDetailsViewModel>();
-        return Ok(ResultViewModel<RecipeDetailsViewModel>.Sucess(recipeViewModel));
+
+        [HttpGet]
+        public async Task<IActionResult> GetRecipeById(int id)
+        {
+            var result = await _mediator.Send(new GetRecipeDetailsByIdQuery(id));
+            if (!result.IsSuccess)
+            {
+                throw new BusinessException(result.ErrorCode, result.Message);
+            }
+            var recipeViewModel = result.Data.MapOne<RecipeDetailsViewModel>();
+            return Ok(ResultViewModel<RecipeDetailsViewModel>.Sucess(recipeViewModel));
+        }
     }
 }
-        }
-    
+
 

@@ -3,11 +3,6 @@ using FoodApp.Domain.Entities;
 using FoodApp.Domain.Enums;
 using FoodApp.Domain.Interface.Base;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FoodApp.Application.CQRS.Users.Queries
 {
@@ -28,7 +23,5 @@ namespace FoodApp.Application.CQRS.Users.Queries
             }
             return ResultDTO<bool>.Faliure(ErrorCode.UserNameIsNotFound, "User Name is Not Found");
         }
-
-
     }
 }

@@ -26,7 +26,7 @@ namespace FoodApp.API.Controllers
             var result = await _mediator.Send(viewModel.MapOne<RegisterUserCommand>());
             if (!result.IsSuccess)
             {
-                throw new BusinessException(result.ErrorCode,result.Message);
+                throw new BusinessException(result.ErrorCode, result.Message);
             }
             return Ok(ResultViewModel<int>.Sucess(result.Data, result.Message));
         }
@@ -58,6 +58,14 @@ namespace FoodApp.API.Controllers
             var x = await _mediator.Send(new LoginUserCommand(user));
 
             return Ok(x);
+        }
+
+        [HttpPut]
+        public async Task<ResultViewModel<int>> UpdateUserAsync(UpdateUserViewModel viewModel)
+        {
+            var result = await _mediator.Send(new UpdateUserCommand(viewModel.MapOne<UpdateUserDto>()));
+
+            return result.MapOne<ResultViewModel<int>>();
         }
     }
 }
