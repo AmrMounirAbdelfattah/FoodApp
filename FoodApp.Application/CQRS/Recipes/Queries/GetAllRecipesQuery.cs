@@ -5,7 +5,7 @@ using MediatR;
 
 namespace FoodApp.Application.CQRS.Recipes.Queries
 {
-    public record GetAllRecipesQuery() : IRequest<IEnumerable<RecipeDto>>;
+    public record GetAllRecipesQuery : IRequest<IEnumerable<RecipeDto>>;
 
     public record RecipeDto(string Name, string? Image, decimal Price, string Description, int Discount, string Category);
 

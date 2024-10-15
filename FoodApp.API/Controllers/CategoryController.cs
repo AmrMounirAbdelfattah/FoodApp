@@ -1,16 +1,13 @@
 ﻿using FoodApp.Application.Common.DTOs;
-using FoodApp.Application.Common.DTOs.Categories;
 using FoodApp.Application.Common.Exceptions;
 using FoodApp.Application.Common.Helpers;
 using FoodApp.Application.Common.ViewModels;
 using FoodApp.Application.Common.ViewModels.Categories;
 using FoodApp.Application.CQRS.Categories.Commands;
 using FoodApp.Application.CQRS.Categories.Queries;
-using FoodApp.Domain.Entities;
 using FoodApp.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Sprache;
 
 namespace FoodApp.API.Controllers
 {
@@ -30,7 +27,7 @@ namespace FoodApp.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ResultDTO<bool>> UpdateCategory(int categoryId , string name)
+        public async Task<ResultDTO<bool>> UpdateCategory(int categoryId, string name)
         {
             var result = await _mediator.Send(new UpdateCategoryCommand(categoryId, name));
 
@@ -48,7 +45,17 @@ namespace FoodApp.API.Controllers
             return Ok(result);
         }
 
-        
+        [HttpGet]
+        public async Task<ResultViewModel<IEnumerable<CategoryViewModel>>> GetAllCategoriesAsync()
+        {
+            var result = await _mediator.Send(new GetAllCategoriesQuery());
+
+            var categoriesVM = result.AsQueryable().Map<CategoryViewModel>().AsEnumerable();
+
+            return ResultViewModel<IEnumerable<CategoryViewModel>>.Sucess(categoriesVM, "Successfully Get All Categories");
+        }
+
+
         [HttpDelete("{id}")]
         public async Task<ResultViewModel<bool>> DeleteCategoryAsync(int id)
         {
