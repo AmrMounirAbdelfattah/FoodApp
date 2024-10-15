@@ -11,6 +11,7 @@ namespace FoodApp.Application.CQRS.Users.Commands
     public record RegisterUserCommand(
         string UserName, string Password, string ConfirmPassword,
         string Email, string Phone, string Country) : IRequest<ResultDTO<int>>;
+
     public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, ResultDTO<int>>
     {
         private readonly IRepository<User> _userRepository;

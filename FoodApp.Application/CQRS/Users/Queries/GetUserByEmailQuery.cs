@@ -19,7 +19,7 @@ namespace FoodApp.Application.CQRS.Users.Queries
 
         public async Task<ResultDTO<User>> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)
         {
-            var user = _userRepository.First(u => u.Email == request.email);
+            var user = await Task.Run(() => _userRepository.First(u => u.Email == request.email));
             if (user is null)
             {
                 return ResultDTO<User>.Faliure(ErrorCode.EmailIsNotFound, "Email is Not Found");
